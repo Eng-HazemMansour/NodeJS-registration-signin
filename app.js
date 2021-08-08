@@ -7,10 +7,13 @@ const initPassportLocal = require('./contollers/passportLocalController');
 const connectFlash = require('connect-flash');
 const session = require('express-session');
 const cookieSession = require('cookie-session');
+var cors = require('cors')
 require('./passport-google');
 
 
 initPassportLocal();
+
+app.use(cors())
 
 app.use(cookieSession({
     name : 'session',
