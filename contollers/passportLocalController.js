@@ -15,15 +15,15 @@ let initPassportLocal = ()=>{
             try{
                 let user = await loginService.findUserByEmail(email);
                 if (!user){
-                    return done(null, false, req.flash("errors", `This email "${email}" doesn't exist`));
+                    return done(null, false, req.flash("reply", `This email "${email}" doesn't exist`));
                 }
                 if (user){
                     let match = await loginService.comparePasswordUser(user, password);
-                    console.log(match)
+                    // console.log(user)
                     if (match === true){
-                        return done(null, user, null);
+                        return done(null, user, req.flash("reply", `Logged in successfully`));
                     } else {
-                        return done(null, false, req.flash("errors, match"));
+                        return done(null, false, req.flash("reply", `Incorrect password`));
                     }
                 }
             } catch(err){

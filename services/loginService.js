@@ -32,6 +32,7 @@ let comparePasswordUser = (user, password) => {
             let isMatch = await bcrypt.compare(password, user.password);
             if(isMatch) resolve(true)
             resolve("Incorrect password")
+            alert("Incorrect password")
         } catch(e){
             reject(e);
         }

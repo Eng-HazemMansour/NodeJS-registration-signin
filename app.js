@@ -11,6 +11,7 @@ var cors = require('cors')
 require('./passport-google');
 
 
+
 initPassportLocal();
 
 app.use(cors())
@@ -42,7 +43,7 @@ app.get("/", (req, res)=>{
 
 app.get("/login", (req, res)=>{
     res.render('login.ejs', {
-        errors: req.flash("errors")
+        reply: req.flash("reply")
     });
 });
 
@@ -51,14 +52,25 @@ app.get("/register", (req, res)=>{
 });
 
 app.post("/login", passport.authenticate("local", {
-    successRedirect : '/',
-    failureRedirect : '/login',
-    successFlash : true,
+    successRedirect : '/successjson',
+    failureRedirect : '/failurejson',
+    // successRedirect : '/',
+    // failureRedirect : '/login',
+    successFlash: true,
     failureFlash : true
 }));
 
+app.get('/successjson', function(req, res) {
+    res.json({ message: 'Signed in successfully', user: req.user });
+    console.log(req.user)
+});
+
+app.get('/failurejson', function(req, res) {
+    res.json({ message: 'Wrong username/password' });
+});
+
 app.get('/failed', (req, res)=>res.send("Google sign in failed"))
-app.get('/success', (req, res)=>res.send(`Google sign in succeeded Mr. ${req.user.email}`))
+app.get('/success', (req, res)=>res.send(`Google sign in succeeded Mr. ${req.user.displayName}`))
 
 app.get('/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
